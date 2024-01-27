@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogCreation from './components/BlogCreation'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,7 +13,7 @@ const App = () => {
   const [infoMessage, setInfoMessage] = useState({ message: null, type: null })
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -46,10 +47,10 @@ const App = () => {
         username, password,
       })
 
-      setUser(user)
       window.localStorage.setItem(
-        'loggedBloglistUser', JSON.stringify(user)
+        'loggedBlogAppUser', JSON.stringify(user)
       )
+      setUser(user)
       notifyWith(`Welcome back ${user.name} !`)
       setUsername('')
       setPassword('')
@@ -85,10 +86,12 @@ const App = () => {
       <h2>blogs</h2>
       <p>{user.name} logged in</p>
       <button onClick={() => {
-        window.localStorage.removeItem('loggedBloglistUser')
+        window.localStorage.removeItem('loggedBlogAppUser')
         setUser(null)
       }}>logout</button>
       <Notification info={infoMessage} />
+      <h2>create new</h2>
+      <BlogCreation blogs={blogs} setBlogs={setBlogs} notifyWith={notifyWith} />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
