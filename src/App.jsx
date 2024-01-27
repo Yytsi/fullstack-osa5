@@ -12,6 +12,14 @@ const App = () => {
   const [infoMessage, setInfoMessage] = useState({ message: null, type: null })
 
   useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }
+  }, [])
+
+  useEffect(() => {
     if (user === null) {
       blogService.getAll().then(blogs =>
         setBlogs(blogs)
@@ -39,6 +47,9 @@ const App = () => {
       })
 
       setUser(user)
+      window.localStorage.setItem(
+        'loggedBloglistUser', JSON.stringify(user)
+      )
       notifyWith(`Welcome back ${user.name} !`)
       setUsername('')
       setPassword('')
@@ -72,6 +83,11 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <p>{user.name} logged in</p>
+      <button onClick={() => {
+        window.localStorage.removeItem('loggedBloglistUser')
+        setUser(null)
+      }}>logout</button>
       <Notification info={infoMessage} />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
