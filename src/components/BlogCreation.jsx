@@ -18,7 +18,7 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith }) => {
     try {
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog))
-      notifyWith(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added!`)
+      notifyWith(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
       setTitle('')
       setAuthor('')
       setUrl('')
