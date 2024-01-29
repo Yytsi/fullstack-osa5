@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const BlogCreation = ({ blogs, setBlogs, notifyWith }) => {
+const BlogCreation = ({ blogs, setBlogs, notifyWith, blogRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -14,6 +14,8 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith }) => {
       author: author,
       url: url
     }
+
+    blogRef.current.toggleVisibility()
 
     try {
       const returnedBlog = await blogService.create(blogObject)
@@ -30,9 +32,10 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith }) => {
 
   return (
     <div>
+      <h2>create new</h2>
       <form onSubmit={addBlog}>
         <div>
-            title:
+          title:
           <input
             type="text"
             value={title}
@@ -41,7 +44,7 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith }) => {
           />
         </div>
         <div>
-            author:
+          author:
           <input
             type="text"
             value={author}
@@ -50,7 +53,7 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith }) => {
           />
         </div>
         <div>
-            url:
+          url:
           <input
             type="text"
             value={url}

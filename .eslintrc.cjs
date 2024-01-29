@@ -26,8 +26,11 @@ module.exports = {
       'warn',
       { allowConstantExport: true }
     ],
-    'react/prop-types': 'off',
     'indent': ['error', 2],
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    'react/jsx-indent': ['error', 2],
+    'react/jsx-indent-props': ['error', 2],
+    'react/display-name': 'off',
+    'react/prop-types': 'off',
   }
 }
