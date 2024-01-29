@@ -14,6 +14,12 @@ const getAllForUser = (user) => {
   })
 }
 
+const putBlog = async (blog) => {
+  console.log("blog at putBlog", blog)
+  const response = await axios.put(`${baseUrl}/${blog.id}`, blog)
+  return response.data
+}
+
 const create = async (newBlog) => {
   console.log("user from storage inside create", JSON.parse(localStorage.getItem('loggedBlogAppUser')))
   const config = {
@@ -23,4 +29,4 @@ const create = async (newBlog) => {
   return response.data
 }
 
-export default { getAll, getAllForUser, create }
+export default { getAll, getAllForUser, create, putBlog }

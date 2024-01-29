@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setBlogs }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   const blogStyle = {
@@ -12,12 +13,24 @@ const Blog = ({ blog }) => {
     width: '50%'
   }
 
+  const handleLike = async () => {
+    const updatedBlog = {
+      ...blog,
+      user: blog.user.id,
+      likes: blog.likes + 1
+    }
+
+    const response = await blogService.putBlog(updatedBlog)
+    const newBlogs = await blogService.getAll()
+    setBlogs(newBlogs)
+  }
+
   const expandedForm = () => {
     return (
       <div>
         {blog.title} <br />
         {blog.url} <br />
-        likes {blog.likes} <button>like</button> <br />
+        likes {blog.likes} <button onClick={handleLike}>like</button> <br />
         {blog.author}
       </div>
     )
