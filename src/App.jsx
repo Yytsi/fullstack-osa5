@@ -21,16 +21,10 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (user === null) {
-      blogService.getAll().then(blogs =>
-        setBlogs(blogs)
-      )
-    } else {
-      blogService.getAllForUser(user).then(blogs =>
-        setBlogs(blogs)
-      )
-    }
-  }, [user])
+    blogService.getAll().then(blogs =>
+      setBlogs( blogs )
+    )
+  }, [])
 
   const notifyWith = (message, type = 'info') => {
     setInfoMessage({ message, type })
