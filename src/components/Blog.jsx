@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
 const Blog = ({ blog, setBlogs, showRemoveButton }) => {
@@ -59,6 +60,12 @@ const Blog = ({ blog, setBlogs, showRemoveButton }) => {
       <button onClick={() => setIsExpanded(!isExpanded)}>{isExpanded ? 'hide' : 'view'}</button>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  showRemoveButton: PropTypes.bool.isRequired
 }
 
 export default Blog

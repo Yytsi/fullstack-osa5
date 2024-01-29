@@ -8,20 +8,20 @@ const getAll = () => {
 
 const getAllForUser = (user) => {
   return getAll().then(blogs => {
-    console.log("user at getAllForUser", user)
-    console.log("blogs at getAllForUser", blogs)
+    console.log('user at getAllForUser', user)
+    console.log('blogs at getAllForUser', blogs)
     return blogs.filter(blog => blog.user.username === user.username)
   })
 }
 
 const putBlog = async (blog) => {
-  console.log("blog at putBlog", blog)
+  console.log('blog at putBlog', blog)
   const response = await axios.put(`${baseUrl}/${blog.id}`, blog)
   return response.data
 }
 
 const deleteBlog = async (blog) => {
-  console.log("blog at deleteBlog", blog)
+  console.log('blog at deleteBlog', blog)
   const config = {
     headers: { Authorization: `bearer ${JSON.parse(localStorage.getItem('loggedBlogAppUser')).token}` }
   }
@@ -30,7 +30,7 @@ const deleteBlog = async (blog) => {
 }
 
 const create = async (newBlog) => {
-  console.log("user from storage inside create", JSON.parse(localStorage.getItem('loggedBlogAppUser')))
+  console.log('user from storage inside create', JSON.parse(localStorage.getItem('loggedBlogAppUser')))
   const config = {
     headers: { Authorization: `bearer ${JSON.parse(localStorage.getItem('loggedBlogAppUser')).token}` }
   }
