@@ -87,10 +87,12 @@ const App = () => {
       }}>logout</button>
       <Notification info={infoMessage} />
       <Togglable buttonLabel='new blog' ref={showBlogRef}>
-        <BlogCreation blogs={blogs} setBlogs={setBlogs} notifyWith={notifyWith} blogRef={showBlogRef}/>
+        <BlogCreation blogs={blogs} setBlogs={setBlogs}
+          notifyWith={notifyWith} blogRef={showBlogRef} />
       </Togglable>
       {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} setBlogs={setBlogs}/>
+        <Blog key={blog.id} blog={blog} setBlogs={setBlogs}
+          showRemoveButton={user.username === blog.user.username}/>
       )}
     </div>
   )

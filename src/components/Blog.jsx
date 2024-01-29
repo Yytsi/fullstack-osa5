@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs }) => {
+const Blog = ({ blog, setBlogs, showRemoveButton }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   const blogStyle = {
@@ -25,6 +25,14 @@ const Blog = ({ blog, setBlogs }) => {
     setBlogs(newBlogs)
   }
 
+  const handleRemove = async () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      await blogService.deleteBlog(blog)
+      const newBlogs = await blogService.getAll()
+      setBlogs(newBlogs)
+    }
+  }
+
   const expandedForm = () => {
     return (
       <div>
@@ -32,6 +40,7 @@ const Blog = ({ blog, setBlogs }) => {
         {blog.url} <br />
         likes {blog.likes} <button onClick={handleLike}>like</button> <br />
         {blog.author}
+        {showRemoveButton && <button onClick={handleRemove}>remove</button>}
       </div>
     )
   }

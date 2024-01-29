@@ -20,6 +20,15 @@ const putBlog = async (blog) => {
   return response.data
 }
 
+const deleteBlog = async (blog) => {
+  console.log("blog at deleteBlog", blog)
+  const config = {
+    headers: { Authorization: `bearer ${JSON.parse(localStorage.getItem('loggedBlogAppUser')).token}` }
+  }
+  const response = await axios.delete(`${baseUrl}/${blog.id}`, config)
+  return response.data
+}
+
 const create = async (newBlog) => {
   console.log("user from storage inside create", JSON.parse(localStorage.getItem('loggedBlogAppUser')))
   const config = {
@@ -29,4 +38,4 @@ const create = async (newBlog) => {
   return response.data
 }
 
-export default { getAll, getAllForUser, create, putBlog }
+export default { getAll, getAllForUser, create, putBlog, deleteBlog }
