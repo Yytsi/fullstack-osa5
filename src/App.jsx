@@ -28,6 +28,18 @@ const App = () => {
     )
   }, [])
 
+  const likeBlog = async (blog) => {
+    const updatedBlog = {
+      ...blog,
+      user: blog.user.id,
+      likes: blog.likes + 1
+    }
+
+    const response = await blogService.putBlog(updatedBlog)
+    const newBlogs = await blogService.getAll()
+    setBlogs(newBlogs)
+  }
+
   const notifyWith = (message, type = 'info') => {
     setInfoMessage({ message, type })
     setTimeout(() => {
@@ -52,6 +64,18 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       notifyWith('wrong credentials', 'error')
+    }
+  }
+
+  const addBlog = async (blogObject) => {
+    showBlogRef.current.toggleVisibility()
+    try {
+      const returnedBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(returnedBlog))
+      notifyWith(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+    } catch (exception) {
+      notifyWith('error creating blog', 'error')
+      console.log('creating a blog and got exception', exception)
     }
   }
 
@@ -88,11 +112,12 @@ const App = () => {
       <Notification info={infoMessage} />
       <Togglable buttonLabel='new blog' ref={showBlogRef}>
         <BlogCreation blogs={blogs} setBlogs={setBlogs}
-          notifyWith={notifyWith} blogRef={showBlogRef} />
+          notifyWith={notifyWith} blogRef={showBlogRef} addBlog={addBlog}/>
       </Togglable>
       {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} setBlogs={setBlogs}
-          showRemoveButton={user.username === blog.user.username}/>
+          showRemoveButton={user.username === blog.user.username}
+          likeBlog={likeBlog} />
       )}
     </div>
   )

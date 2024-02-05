@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, showRemoveButton }) => {
+const Blog = ({ blog, setBlogs, showRemoveButton, likeBlog }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   const blogStyle = {
@@ -12,18 +12,6 @@ const Blog = ({ blog, setBlogs, showRemoveButton }) => {
     borderWidth: 1,
     marginBottom: 5,
     width: '50%'
-  }
-
-  const handleLike = async () => {
-    const updatedBlog = {
-      ...blog,
-      user: blog.user.id,
-      likes: blog.likes + 1
-    }
-
-    const response = await blogService.putBlog(updatedBlog)
-    const newBlogs = await blogService.getAll()
-    setBlogs(newBlogs)
   }
 
   const handleRemove = async () => {
@@ -39,7 +27,9 @@ const Blog = ({ blog, setBlogs, showRemoveButton }) => {
       <div>
         {blog.title} <br />
         {blog.url} <br />
-        likes {blog.likes} <button onClick={handleLike}>like</button> <br />
+        likes {blog.likes} <button onClick={async () => {
+          await likeBlog(blog)
+        }}>like</button> <br />
         {blog.author}
         {showRemoveButton && <button onClick={handleRemove}>remove</button>}
       </div>
@@ -65,7 +55,8 @@ const Blog = ({ blog, setBlogs, showRemoveButton }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   setBlogs: PropTypes.func.isRequired,
-  showRemoveButton: PropTypes.bool.isRequired
+  showRemoveButton: PropTypes.bool.isRequired,
+  likeBlog: PropTypes.func.isRequired
 }
 
 export default Blog

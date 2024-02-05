@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
-const BlogCreation = ({ blogs, setBlogs, notifyWith, blogRef }) => {
+const BlogCreation = ({ blogs, setBlogs, notifyWith, blogRef, addBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = async (event) => {
+  const createBlog = async (event) => {
     event.preventDefault()
 
     const blogObject = {
@@ -16,28 +16,20 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith, blogRef }) => {
       url: url
     }
 
-    blogRef.current.toggleVisibility()
-
-    try {
-      const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(returnedBlog))
-      notifyWith(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-    } catch (exception) {
-      notifyWith('error creating blog', 'error')
-      console.log('creating a blog and got exception', exception)
-    }
+    await addBlog(blogObject)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={createBlog}>
         <div>
-          title:
+          <label htmlFor="titleInput">title:</label>
           <input
+            id="titleInput"
             type="text"
             value={title}
             name="Title"
@@ -45,8 +37,9 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith, blogRef }) => {
           />
         </div>
         <div>
-          author:
+          <label htmlFor="authorInput">author:</label>
           <input
+            id="authorInput"
             type="text"
             value={author}
             name="Author"
@@ -54,8 +47,9 @@ const BlogCreation = ({ blogs, setBlogs, notifyWith, blogRef }) => {
           />
         </div>
         <div>
-          url:
+          <label htmlFor="urlInput">url:</label>
           <input
+            id="urlInput"
             type="text"
             value={url}
             name="Url"
@@ -72,7 +66,8 @@ BlogCreation.propTypes = {
   blogs: PropTypes.array.isRequired,
   setBlogs: PropTypes.func.isRequired,
   notifyWith: PropTypes.func.isRequired,
-  blogRef: PropTypes.object.isRequired
+  blogRef: PropTypes.object.isRequired,
+  addBlog: PropTypes.func.isRequired
 }
 
 export default BlogCreation
