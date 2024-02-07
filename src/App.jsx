@@ -120,8 +120,6 @@ const App = () => {
           showRemoveButton={user.username === blog.user.username}
           likeBlog={likeBlog} />
       )}
-      {user.username} <br/>
-      {blogs.length === 0 ? 'No blogs to show' : blogs[0].user.username}
     </div>
   )
 }
