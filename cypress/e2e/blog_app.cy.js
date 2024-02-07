@@ -61,12 +61,27 @@ describe('Blog app', function() {
       cy.contains('likes 1')
     })
 
-    it('A blog can be deleted', function() {
+    it('A blog can be deleted by owner', function() {
       cy.createBlog({ title: 'Test blog', author: 'Test Author', url: 'http://my.example.com' })
       cy.contains('view').click()
       cy.contains('remove').click()
       cy.contains('Test blog').should('not.exist')
       cy.contains('Test Author').should('not.exist')
+    })
+
+    it('A blog cannot be deleted by non-owner', function() {
+      cy.createBlog({ title: 'Test blog', author: 'Test Author', url: 'http://my.example.com' })
+      cy.contains('logout').click()
+      const user = {
+        name: 'Testi Mies 2',
+        username: 'testimies2',
+        password: 'strongpass4242'
+      }
+      cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+      cy.login({ username: 'testimies2', password: 'strongpass4242' })
+      cy.visit('')
+      cy.contains('view').click()
+      cy.contains('remove').should('not.exist')
     })
   })
 })
