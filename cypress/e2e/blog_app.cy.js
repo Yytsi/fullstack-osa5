@@ -83,5 +83,39 @@ describe('Blog app', function() {
       cy.contains('view').click()
       cy.contains('remove').should('not.exist')
     })
+
+    it('Blogs are ordered by likes', function() {
+      cy.createBlog({ title: 'Test blog 1', author: 'Test Author 1', url: 'http://my.example.com/1' })
+      cy.createBlog({ title: 'Test blog 2', author: 'Test Author 2', url: 'http://my.example.com/2' })
+      cy.createBlog({ title: 'Test blog 3', author: 'Test Author 3', url: 'http://my.example.com/3' })
+      cy.contains('Test blog 3').parent().contains('view').click()
+      cy.contains('Test blog 3').parent().contains('like').click()
+      cy.contains('Test blog 3').parent().contains('like').click()
+      cy.contains('Test blog 3').parent().contains('like').click()
+      cy.contains('Test blog 3').parent().contains('like').click()
+      cy.contains('Test blog 2').parent().contains('view').click()
+      cy.contains('Test blog 2').parent().contains('like').click()
+      cy.contains('Test blog 2').parent().contains('like').click()
+      cy.contains('Test blog 1').parent().contains('view').click()
+      cy.contains('Test blog 1').parent().contains('like').click()
+
+      cy.get('.blog').then(blogs => {
+        cy.wrap(blogs[0]).contains('Test blog 3')
+        cy.wrap(blogs[1]).contains('Test blog 2')
+        cy.wrap(blogs[2]).contains('Test blog 1')
+      })
+
+      cy.contains('Test blog 1').parent().contains('like').click()
+      cy.contains('Test blog 1').parent().contains('like').click()
+      cy.contains('Test blog 1').parent().contains('like').click()
+      cy.contains('Test blog 1').parent().contains('like').click()
+      cy.contains('Test blog 1').parent().contains('like').click()
+
+      cy.get('.blog').then(blogs => {
+        cy.wrap(blogs[0]).contains('Test blog 1')
+        cy.wrap(blogs[1]).contains('Test blog 3')
+        cy.wrap(blogs[2]).contains('Test blog 2')
+      })
+    })
   })
 })

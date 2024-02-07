@@ -45,7 +45,7 @@ const Blog = ({ blog, setBlogs, showRemoveButton, likeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {isExpanded ? expandedForm() : collapsedForm()}
       <button onClick={() => setIsExpanded(!isExpanded)}>{isExpanded ? 'hide' : 'view'}</button>
     </div>
